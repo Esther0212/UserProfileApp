@@ -1,20 +1,47 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+// App.js
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from './components/Login';
+import UserProfile from './components/UserProfile';
+import PasswordRecovery from './components/PasswordRecovery';
+import SignUp from './components/SignUp';
+import ResetPassword from './components/ResetPassword';
 
-export default function App() {
+const Stack = createNativeStackNavigator();
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen 
+          name="Login" 
+          component={Login} 
+          options={{ headerShown: false }} // Hide header for Login
+        />
+        <Stack.Screen 
+          name="UserProfile" 
+          component={UserProfile} 
+          options={{ headerShown: false }} // Hide header for UserProfile
+        />
+        <Stack.Screen 
+          name="PasswordRecovery" 
+          component={PasswordRecovery} 
+          options={{ headerShown: false }} // Hide header for UserProfile
+        />
+        <Stack.Screen 
+          name="SignUp" 
+          component={SignUp} 
+          options={{ headerShown: false }} // Hide header for UserProfile
+        />
+        <Stack.Screen 
+          name="ResetPassword" 
+          component={ResetPassword} 
+          options={{ headerShown: false }} // Hide header for UserProfile
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
