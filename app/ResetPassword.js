@@ -3,15 +3,12 @@ import { View, Text, StyleSheet, SafeAreaView, Image, TextInput, TouchableOpacit
 import React, { useState } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { useRouter } from 'expo-router';
 
 const ResetPassword = ({navigation}) => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [confirmPasswordVisible, setconfirmPasswordVisible] = useState(false);
-
-    const handleReset = () => {
-        // Add your authentication logic here
-        navigation.navigate('Login');
-      };
+    const router = useRouter();
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -67,7 +64,7 @@ const ResetPassword = ({navigation}) => {
             </View>
 
             {/* Reset password button */}
-            <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
+            <TouchableOpacity style={styles.resetButton} onPress={() => router.replace('/')}>
             <AntDesign name='back' color='white' size={25}/>
             <Text style={styles.resetButtonText}>Reset password</Text>
             </TouchableOpacity>

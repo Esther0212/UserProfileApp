@@ -2,15 +2,14 @@
 import { View, Text, StyleSheet, SafeAreaView, Image, TextInput, TouchableOpacity, TouchableOpacityComponent, } from 'react-native'
 import React from 'react'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useRouter } from 'expo-router';
 
 const PasswordRecovery = ({ navigation }) => {
-  const handleLogin = () => {
-    // Add your authentication logic here
-    navigation.navigate('Login');
-  };
+  const router = useRouter();
+
   const handleContinue = () => {
     // Add your authentication logic here
-    navigation.navigate('ResetPassword');
+    router.push('ResetPassword');
   };
 
   return (
@@ -46,7 +45,7 @@ const PasswordRecovery = ({ navigation }) => {
         </TouchableOpacity>
         
         {/* Continue button */}
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+        <TouchableOpacity style={styles.loginButton} onPress={() => router.back("index")}>
           <Text style={styles.loginText}>Back to login</Text>
         </TouchableOpacity>
       </View>

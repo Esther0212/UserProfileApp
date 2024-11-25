@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef} from "react";
 import {
   View,
   Text,
@@ -22,9 +22,12 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { useRouter } from "expo-router";
 
 const UserProfile = ({navigation}) => {
   const [editing, setEditing] = useState(false);
+  const scrollViewRef = useRef(null); // Reference for the ScrollView
+  const router = useRouter();
 
   const [profileData, setProfileData] = useState({
     fullName: "Esther Beuthel G. Eblacas",
@@ -39,10 +42,15 @@ const UserProfile = ({navigation}) => {
     website: "www.example.com",
     hobbies: "Gaming, Drawing",
     skills: "A bit of programming",
-    profilePicture: require("../assets/profile.jpg"),
-    coverPicture: require("../assets/cover.jpg"),
+    profilePicture: require("../../../assets/profile.jpg"),
+    coverPicture: require("../../../assets/cover.jpg"),
   });
 
+  const handleEditPress = () => {
+    setEditing(true);
+    scrollViewRef.current?.scrollTo({ y: 0, animated: true }); // Scroll to the top
+  };
+  
   const saveProfile = () => {
     setEditing(false);
     Alert.alert("Profile Saved", "Your profile information has been saved.");
@@ -62,18 +70,14 @@ const UserProfile = ({navigation}) => {
       website: "",
       hobbies: "",
       skills: "",
-      profilePicture: require("../assets//profile.jpg"),
-      coverPicture: require("../assets/cover.jpg"),
+      profilePicture: require("../../../assets/nullProfileImage.jpg"),
+      coverPicture: require("../../../assets/nullProfileImage.jpg"),
     });
     Alert.alert("Profile Deleted", "All profile information has been cleared.");
   };
 
   const handleChange = (key, value) => {
     setProfileData((prevData) => ({ ...prevData, [key]: value }));
-  };
-
-  const handleLogout = () => {
-    navigation.navigate('Login');
   };
 
   // Function to pick an image
@@ -111,13 +115,35 @@ const UserProfile = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView contentContainerStyle={styles.container} ref={scrollViewRef}>
+      <View style={styles.editIconContainer}>
+        <TouchableOpacity style={styles.editIcon} onPress={() => editing && pickImage("profile")} disabled={!editing}>
+          {editing && (
+            <MaterialCommunityIcons
+              name="pencil-circle"  // Choose the appropriate icon name, e.g., "edit"
+              size={30}  // Adjust size as needed
+              color="blue"  // Adjust color as needed
+            />
+          )}
+          </TouchableOpacity>
+          </View>
         <View style={styles.coverImageContainer}>
           <TouchableOpacity onPress={() => editing && pickImage("cover")} disabled={!editing}>
             <Image source={profileData.coverPicture} style={styles.coverImage} />
           </TouchableOpacity>
         </View>
 
+        <View style={styles.editIconContainer2}>
+          <TouchableOpacity style={styles.editIcon2} onPress={() => editing && pickImage("profile")} disabled={!editing}>
+          {editing && (
+            <MaterialCommunityIcons
+              name="pencil-circle"  // Choose the appropriate icon name, e.g., "edit"
+              size={30}  // Adjust size as needed
+              color="blue"  // Adjust color as needed
+            />
+          )}
+          </TouchableOpacity>
+          </View>
         <View style={styles.profileImageContainer}>
           <TouchableOpacity onPress={() => editing && pickImage("profile")} disabled={!editing}>
             <Image
@@ -347,14 +373,21 @@ const UserProfile = ({navigation}) => {
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[styles.button, styles.editButton]}
-            onPress={editing ? saveProfile : () => setEditing(true)}
-          >
-            <Text style={styles.buttonText}>
-              {editing ? "Save Changes" : "Edit Profile"}
-            </Text>
-          </TouchableOpacity>
+        {!editing ? (
+            <TouchableOpacity
+              style={[styles.button, styles.editButton]}
+              onPress={handleEditPress}
+            >
+              <Text style={styles.buttonText}>Edit Profile</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={[styles.button, styles.saveButton]}
+              onPress={saveProfile}
+            >
+              <Text style={styles.buttonText}>Save Profile</Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             style={[styles.button, styles.deleteButton]}
             onPress={deleteProfile}
@@ -366,7 +399,7 @@ const UserProfile = ({navigation}) => {
         <View style={styles.horizontalLine} />
 
          {/* Logout Button */}
-         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+         <TouchableOpacity style={styles.logoutButton} onPress={() => router.replace("/")}>
           <Text style={styles.logoutButtonText}>Logout</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -391,6 +424,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#eee",
     marginBottom: 40,
     borderRadius: 20,
+    flexDirection: "column",
+    position: "relative", // Make this container relative for absolute positioning
   },
   coverImage: {
     width: "100%",
@@ -409,11 +444,38 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: "#fff",
     overflow: "hidden",
+    flexDirection: "column",
+    position: "relative", 
   },
   profileImage: {
     width: "100%",
     height: "100%",
     resizeMode: "cover",
+  },
+  editIconContainer: {
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  editIcon: {
+    position: "absolute",  // Absolutely position the icon
+    marginLeft: 350,
+    marginTop: -10,
+    backgroundColor: 'white',
+    zIndex: 1,  // Ensure the icon is on top of the image
+    borderRadius: 15,
+  },
+  editIconContainer2: {
+    width: '100%',
+    flexDirection: 'column',
+  },
+  editIcon2: {
+    position: "absolute",  // Absolutely position the icon
+    marginLeft: 200,
+    marginTop: -85,
+    backgroundColor: 'white',
+    zIndex: 1,  // Ensure the icon is on top of the image
+    borderRadius: 15,
   },
   row: {
     flexDirection: "row",
@@ -473,6 +535,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   editButton: {
+    backgroundColor: "#555",
+  },
+  saveButton: {
     backgroundColor: "#555",
   },
   deleteButton: {

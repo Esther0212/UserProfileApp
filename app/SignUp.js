@@ -5,25 +5,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useRouter } from 'expo-router';
 
-const Login = ({ navigation }) => {
+const Login = ({ }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setconfirmPasswordVisible] = useState(false);
-
-  const handleLogin = () => {
-    // Add your authentication logic here
-    navigation.navigate('Login');
-  };
-
-  const handleGoogleLogin = () => {
-    // Add your Google login logic here
-    navigation.navigate('UserProfile');
-  };
-
-  const handleSignUp = () => {
-    // Add your sign up logic here
-    navigation.navigate('Login');
-  };
+  const router = useRouter();
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -80,7 +67,7 @@ const Login = ({ navigation }) => {
               />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.signupButton} onPress={handleSignUp}>
+          <TouchableOpacity style={styles.signupButton} onPress={() => router.push('Dashboard/(tabs)')}>
             <MaterialIcons name='login' color='white' size={25}/>
             <Text style={styles.signupText}>Sign up</Text>
           </TouchableOpacity>
@@ -93,7 +80,7 @@ const Login = ({ navigation }) => {
           </View>
 
           {/* Other sign in method buttons */}
-          <TouchableOpacity style={styles.googleButton} onPress={handleGoogleLogin}>
+          <TouchableOpacity style={styles.googleButton} onPress={() => router.push('Dashboard/(tabs)')}>
             <AntDesign name='google' color='black' size={25}/>
             <Text style={styles.googleButtonText}>Sign in with Google</Text>
           </TouchableOpacity>
@@ -101,7 +88,7 @@ const Login = ({ navigation }) => {
           {/* Login section */}
           <View style={styles.loginContainer}>
             <Text style={styles.loginText}>Already have an account?</Text>
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+            <TouchableOpacity style={styles.loginButton} onPress={() => router.back("index")}>
               <Text style={styles.loginButtonText}>Login</Text>
             </TouchableOpacity>
           </View>

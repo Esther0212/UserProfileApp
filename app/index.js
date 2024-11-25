@@ -5,28 +5,30 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useRouter } from 'expo-router';
 
-const Login = ({ navigation }) => {
+const Login = ({ }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const router = useRouter();
 
   const handleLogin = () => {
     // Add your authentication logic here
-    navigation.navigate('UserProfile');
+    router.push('Dashboard/(tabs)');
   };
 
   const handleGoogleLogin = () => {
     // Add your Google login logic here
-    navigation.navigate('UserProfile');
+    router.push('Dashboard/(tabs)');
   };
 
   const handleForgotPassword = () => {
     // Add your password recovery logic here
-    navigation.navigate('PasswordRecovery');
+    router.push('PasswordRecovery');
   };
 
   const handleSignUp = () => {
     // Add your sign up logic here
-    navigation.navigate('SignUp');
+    router.push('SignUp');
   };
 
   return (
